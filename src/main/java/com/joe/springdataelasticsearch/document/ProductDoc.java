@@ -21,6 +21,8 @@ public class ProductDoc implements Serializable{
 	 */
 	private static final long serialVersionUID = -7204953593090241813L;
 	
+	public ProductDoc() {} // mandatory for Json Mapping
+
 	public ProductDoc(Long id, String name, String description, String type, Boolean isSelfRun) {
 		super();
 		this.id = id;
@@ -36,15 +38,19 @@ public class ProductDoc implements Serializable{
 	
 	@Field(type=FieldType.String)
 	private String name;
+	public static final String _name="name";
 	
 	@Field(type=FieldType.String)
 	private String description;
-
+	public static final String _description="description";
+	
 	@Field(type=FieldType.String, index=FieldIndex.not_analyzed)
 	private String type;
+	public static final String _type="type";
 	
 	@Field(type=FieldType.Boolean, index = FieldIndex.not_analyzed)
 	private Boolean isSelfRun;
+	public static final String _isSelfRun="isSelfRun";
 	
 	public Boolean getIsSelfRun() {
 		return isSelfRun;

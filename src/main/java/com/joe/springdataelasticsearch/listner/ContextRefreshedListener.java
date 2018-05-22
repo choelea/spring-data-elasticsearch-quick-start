@@ -33,11 +33,13 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
 	
 	private List<ProductDoc> createTestData(){
 		List<ProductDoc> list = new ArrayList<ProductDoc>();
-		list.add(new ProductDoc(0L, "Iphone X", "Iphone X is made by China", "SMARTPHONE", Boolean.TRUE));
+		list.add(new ProductDoc(0L, "Fake", "Iphone！Iphone! Better than Iphone", "GENERAL", Boolean.FALSE));
 		list.add(new ProductDoc(1L, "Mac Pro", "Mac Pro is made by China", "SMARTPHONE", Boolean.TRUE));
-		list.add(new ProductDoc(2L, "Huawei Max", "Iphone X is made by China", "SMARTPHONE", Boolean.FALSE));
-		list.add(new ProductDoc(3L, "Nokia", "Nokia is an very old brand and famous", "GENERAL", Boolean.FALSE));
-		list.add(new ProductDoc(4L, "Nokia 2", "Nokia is an very old brand and famous", "SMARTPHONE", Boolean.FALSE));
+		list.add(new ProductDoc(2L, "Huawei", "Made by China", "SMARTPHONE", Boolean.FALSE));
+		list.add(new ProductDoc(3L, "Huawei Max3", "Huawei is designed / made by China", "SMARTPHONE", Boolean.FALSE));
+		list.add(new ProductDoc(4L, "Nokia", "Nokia better than Iphone", "GENERAL", Boolean.FALSE));
+		list.add(new ProductDoc(5L, "Iphone X", "Iphone X is made by China", "SMARTPHONE", Boolean.TRUE));
+		list.add(new ProductDoc(6L, "Nokia Note", "Nokia is an very old brand and famous", "SMARTPHONE", Boolean.FALSE));
 		return list;
 	}
 	
