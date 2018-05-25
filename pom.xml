@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.joe</groupId>
-	<artifactId>spring-data-elasticsearch</artifactId>
+	<artifactId>spring-data-elasticsearch-quick-start</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>spring-data-elasticsearch</name>
+	<name>spring-data-elasticsearch-quick-start</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
