@@ -22,4 +22,10 @@ public class ProductDocController {
 			@RequestParam(defaultValue = "0") Integer pageNumber, @RequestParam(defaultValue = "10") Integer pageSize) {
 		return productDocService.search(keyword, isSelfRun, new PageRequest(pageNumber, pageSize));
 	}
+	
+	@GetMapping("/aggregation")
+	public Page<ProductDoc> aggregationSearch(String keyword, @RequestParam(required=false) Boolean isSelfRun,
+			@RequestParam(defaultValue = "0") Integer pageNumber, @RequestParam(defaultValue = "10") Integer pageSize) {
+		return productDocService.aggregationSearch(keyword, isSelfRun, new PageRequest(pageNumber, pageSize));
+	}
 }

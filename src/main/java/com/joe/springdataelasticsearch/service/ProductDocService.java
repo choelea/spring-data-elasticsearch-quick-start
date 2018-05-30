@@ -7,4 +7,6 @@ import com.joe.springdataelasticsearch.document.ProductDoc;
 
 public interface ProductDocService {
 	Page<ProductDoc> search(String keyword, Boolean isSelfRun, Pageable pageable);
+
+	Page<ProductDoc> aggregationSearch(String keyword, Boolean isSelfRun, Pageable pageable);
 }
