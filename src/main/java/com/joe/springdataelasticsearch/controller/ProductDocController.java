@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.joe.springdataelasticsearch.document.ProductDoc;
+import com.joe.springdataelasticsearch.domain.AggregatedProductDocsPage;
 import com.joe.springdataelasticsearch.service.ProductDocService;
 
 @RestController
@@ -24,7 +25,7 @@ public class ProductDocController {
 	}
 	
 	@GetMapping("/aggregation")
-	public Page<ProductDoc> aggregationSearch(String keyword, @RequestParam(required=false) Boolean isSelfRun,
+	public AggregatedProductDocsPage<ProductDoc> aggregationSearch(String keyword, @RequestParam(required=false) Boolean isSelfRun,
 			@RequestParam(defaultValue = "0") Integer pageNumber, @RequestParam(defaultValue = "10") Integer pageSize) {
 		return productDocService.aggregationSearch(keyword, isSelfRun, new PageRequest(pageNumber, pageSize));
 	}

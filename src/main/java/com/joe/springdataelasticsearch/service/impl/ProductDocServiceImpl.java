@@ -1,11 +1,9 @@
 package com.joe.springdataelasticsearch.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.ResultsExtractor;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 
+import com.joe.springdataelasticsearch.core.AggregationResultMapper;
 import com.joe.springdataelasticsearch.document.ProductDoc;
+import com.joe.springdataelasticsearch.domain.AggregatedProductDocsPage;
 import com.joe.springdataelasticsearch.repository.ProductDocRespository;
 import com.joe.springdataelasticsearch.service.ProductDocService;
 @Service
@@ -32,6 +31,8 @@ public class ProductDocServiceImpl implements ProductDocService {
 	@Autowired
 	private ElasticsearchTemplate elasticsearchTemplate;
 	
+	@Autowired
+	private AggregationResultMapper aggregationResultMapper;
 	@Override
 	public Page<ProductDoc> search(String keyword, Boolean isSelfRun, Pageable pageable) {
 		BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
@@ -53,8 +54,8 @@ public class ProductDocServiceImpl implements ProductDocService {
 	}
 	
 	@Override
-	public Page<ProductDoc> aggregationSearch(String keyword, Boolean isSelfRun, Pageable pageable) {
-		TermsBuilder termBuilder = AggregationBuilders.terms("byType").field("type");
+	public AggregatedProductDocsPage<ProductDoc> aggregationSearch(String keyword, Boolean isSelfRun, Pageable pageable) {
+		TermsBuilder termBuilder = AggregationBuilders.terms(AggregatedProductDocsPage.BY_TYPE).field("type");
 		
 		BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
 		if (StringUtils.isNotEmpty(keyword)) {
@@ -71,15 +72,10 @@ public class ProductDocServiceImpl implements ProductDocService {
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder)
 				.withPageable(pageable).addAggregation(termBuilder).build();
 		
-		Aggregations aggregations = elasticsearchTemplate.query(searchQuery, new ResultsExtractor<Aggregations>() {
-			@Override
-			public Aggregations extract(SearchResponse response) {
-				return response.getAggregations();
-			}
-		});
-				
 		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
-		return productDocRespository.search(searchQuery);
+		AggregatedProductDocsPage<ProductDoc> page = (AggregatedProductDocsPage<ProductDoc>)elasticsearchTemplate.queryForPage(searchQuery, ProductDoc.class, aggregationResultMapper);
+		
+		return page;
 	}
 
 }
