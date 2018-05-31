@@ -16,7 +16,7 @@ import com.joe.springdataelasticsearch.domain.AggregatedProductDocsPage;
 import com.joe.springdataelasticsearch.domain.BucketData;
 
 @Component
-public class AggregationResultMapper extends DefaultResultMapper {
+public class ProductDocAggregationResultMapper extends DefaultResultMapper {
 
 	
 	@Override

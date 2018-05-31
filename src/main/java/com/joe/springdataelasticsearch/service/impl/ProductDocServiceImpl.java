@@ -15,7 +15,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 
-import com.joe.springdataelasticsearch.core.AggregationResultMapper;
+import com.joe.springdataelasticsearch.core.ProductDocAggregationResultMapper;
 import com.joe.springdataelasticsearch.document.ProductDoc;
 import com.joe.springdataelasticsearch.domain.AggregatedProductDocsPage;
 import com.joe.springdataelasticsearch.repository.ProductDocRespository;
@@ -32,7 +32,7 @@ public class ProductDocServiceImpl implements ProductDocService {
 	private ElasticsearchTemplate elasticsearchTemplate;
 	
 	@Autowired
-	private AggregationResultMapper aggregationResultMapper;
+	private ProductDocAggregationResultMapper aggregationResultMapper;
 	@Override
 	public Page<ProductDoc> search(String keyword, Boolean isSelfRun, Pageable pageable) {
 		BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
