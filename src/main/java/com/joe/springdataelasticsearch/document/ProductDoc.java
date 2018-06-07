@@ -13,7 +13,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
  * @author joe
  *
  */
-@Document(indexName="product-index", type="product")
+@Document(indexName="product-index", type="main")
 public class ProductDoc implements Serializable{
 	
 	/**

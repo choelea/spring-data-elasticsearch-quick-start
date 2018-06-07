@@ -1,23 +1,32 @@
 package com.joe.springdataelasticsearch.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
+import org.elasticsearch.search.highlight.HighlightBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 
-import com.joe.springdataelasticsearch.core.ProductDocAggregationResultMapper;
+import com.joe.springdataelasticsearch.core.ExtResultMapper;
 import com.joe.springdataelasticsearch.document.ProductDoc;
-import com.joe.springdataelasticsearch.domain.AggregatedProductDocsPage;
+import com.joe.springdataelasticsearch.domain.BucketData;
+import com.joe.springdataelasticsearch.domain.DocumentPage;
 import com.joe.springdataelasticsearch.repository.ProductDocRespository;
 import com.joe.springdataelasticsearch.service.ProductDocService;
 @Service
@@ -32,7 +41,8 @@ public class ProductDocServiceImpl implements ProductDocService {
 	private ElasticsearchTemplate elasticsearchTemplate;
 	
 	@Autowired
-	private ProductDocAggregationResultMapper aggregationResultMapper;
+	private ExtResultMapper extResultMapper;
+	
 	@Override
 	public Page<ProductDoc> search(String keyword, Boolean isSelfRun, Pageable pageable) {
 		BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
@@ -54,8 +64,8 @@ public class ProductDocServiceImpl implements ProductDocService {
 	}
 	
 	@Override
-	public AggregatedProductDocsPage<ProductDoc> aggregationSearch(String keyword, Boolean isSelfRun, Pageable pageable) {
-		TermsBuilder termBuilder = AggregationBuilders.terms(AggregatedProductDocsPage.BY_TYPE).field("type");
+	public DocumentPage<ProductDoc> aggregationSearch(String keyword, Boolean isSelfRun, Pageable pageable) {
+		TermsBuilder termBuilder = AggregationBuilders.terms(DocumentPage.BY_TYPE).field("type");
 		
 		BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
 		if (StringUtils.isNotEmpty(keyword)) {
@@ -70,12 +80,29 @@ public class ProductDocServiceImpl implements ProductDocService {
 		
 				
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder)
-				.withPageable(pageable).addAggregation(termBuilder).build();
+				.withPageable(pageable)
+				.withHighlightFields( new HighlightBuilder.Field(ProductDoc._name).forceSource(true), new HighlightBuilder.Field(ProductDoc._description).forceSource(true))
+				.addAggregation(termBuilder).build();
 		
 		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
-		AggregatedProductDocsPage<ProductDoc> page = (AggregatedProductDocsPage<ProductDoc>)elasticsearchTemplate.queryForPage(searchQuery, ProductDoc.class, aggregationResultMapper);
+		AggregatedPage<ProductDoc> page =  elasticsearchTemplate.queryForPage(searchQuery, ProductDoc.class, extResultMapper);
 		
-		return page;
+		return convert(page);
+	}
+
+	private DocumentPage<ProductDoc> convert(AggregatedPage<ProductDoc> page) {
+		DocumentPage<ProductDoc> returnPage = new DocumentPage<>(page.getContent(), new com.joe.springdataelasticsearch.domain.Pageable(page.getNumber(), page.getSize()));
+		returnPage.setBucketsByType(build(page.getAggregations()));
+		return returnPage;
+	}
+	
+	private List<BucketData> build(Aggregations aggregations) {
+		Terms byCateTerm = aggregations.get(DocumentPage.BY_TYPE);
+		List<BucketData> list = new ArrayList<>();
+		for (Bucket bucket : byCateTerm.getBuckets()) {					
+			list.add(new BucketData(bucket.getKeyAsString(), bucket.getKeyAsString(), bucket.getDocCount()));
+		}
+		return list;
 	}
 
 }
