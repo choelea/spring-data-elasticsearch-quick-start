@@ -1,7 +1,8 @@
 package com.joe.springdataelasticsearch.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +20,9 @@ public class ProductDocController {
 	private ProductDocService productDocService;
 
 	@GetMapping
-	public Page<ProductDoc> search(String keyword, @RequestParam(required=false) Boolean isSelfRun,
+	public List<ProductDoc> search(String keyword, @RequestParam(required=false) Boolean isSelfRun,
 			@RequestParam(defaultValue = "0") Integer pageNumber, @RequestParam(defaultValue = "10") Integer pageSize) {
-		return productDocService.search(keyword, isSelfRun, new PageRequest(pageNumber, pageSize));
+		return productDocService.search(keyword, isSelfRun, new PageRequest(pageNumber, pageSize)).getContent();
 	}
 	
 	@GetMapping("/aggregation")

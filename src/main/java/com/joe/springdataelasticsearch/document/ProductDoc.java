@@ -36,11 +36,11 @@ public class ProductDoc implements Serializable{
 	@Field(type=FieldType.Long, index=FieldIndex.not_analyzed)
 	private Long id;
 	
-	@Field(type=FieldType.String)
+	@Field(type=FieldType.String, analyzer="english")
 	private String name;
 	public static final String _name="name";
 	
-	@Field(type=FieldType.String)
+	@Field(type=FieldType.String, analyzer="english")
 	private String description;
 	public static final String _description="description";
 	
