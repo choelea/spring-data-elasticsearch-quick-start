@@ -81,7 +81,7 @@ public class ProductDocServiceImpl implements ProductDocService {
 				
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder)
 				.withPageable(pageable)
-				.withHighlightFields( new HighlightBuilder.Field(ProductDoc._name).forceSource(true), new HighlightBuilder.Field(ProductDoc._description).forceSource(true))
+				.withHighlightFields( new HighlightBuilder.Field(ProductDoc._name).numOfFragments(1), new HighlightBuilder.Field(ProductDoc._description).forceSource(true))
 				.addAggregation(termBuilder).build();
 		
 		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());

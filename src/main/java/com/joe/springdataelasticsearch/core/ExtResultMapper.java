@@ -11,11 +11,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.get.MultiGetItemResponse;
 import org.elasticsearch.action.get.MultiGetResponse;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.text.Text;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHitField;
 import org.elasticsearch.search.highlight.HighlightField;
@@ -65,7 +67,9 @@ public class ExtResultMapper extends AbstractResultMapper {
 	private <T>  void populateHighLightedFields(T result, Map<String, HighlightField> highlightFields) {
 		for (HighlightField field : highlightFields.values()) {
 			try {
-				PropertyUtils.setProperty(result, field.getName(), field.getFragments()[0].toString());
+				PropertyUtils.setProperty(result, field.getName(), concat(field.fragments()));
+				if(ArrayUtils.isNotEmpty(field.getFragments())) {// Should be unnecessary				
+				}
 			} catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
 				throw new ElasticsearchException("failed to set highlighted value for field: " + field.getName()
 						+ " with value: " + field.getFragments(), e);
@@ -73,6 +77,14 @@ public class ExtResultMapper extends AbstractResultMapper {
 		}		
 	}
 
+	private String concat(Text[] texts) {
+		StringBuffer sb = new StringBuffer();
+		for (Text text : texts) {
+			sb.append(text.toString());
+		}
+		return sb.toString();
+	}
+	
 
 	private <T> void populateScriptFields(T result, SearchHit hit) {
 		if (hit.getFields() != null && !hit.getFields().isEmpty() && result != null) {
