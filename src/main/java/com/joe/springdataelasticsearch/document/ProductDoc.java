@@ -3,10 +3,12 @@ package com.joe.springdataelasticsearch.document;
 import java.io.Serializable;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.CompletionField;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldIndex;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.core.completion.Completion;
 
 /**
  * Define Document 'product-index', 如果不指定type，会使用class的名称作为type， 5.0 后的版本是没有type的。
@@ -30,15 +32,20 @@ public class ProductDoc implements Serializable{
 		this.description = description;
 		this.type = type;
 		this.isSelfRun = isSelfRun;
+		this.suggest=new Completion(new String[]{name});
 	}
 
 	@Id
 	@Field(type=FieldType.Long, index=FieldIndex.not_analyzed)
 	private Long id;
 	
-	@Field(type=FieldType.String, analyzer="english")
+	@Field(type=FieldType.String,  analyzer="english")
 	private String name;
 	public static final String _name="name";
+	
+	@CompletionField(analyzer="english", maxInputLength=100)
+	private Completion suggest;
+	public static final String _suggest="suggest";
 	
 	@Field(type=FieldType.String, analyzer="english")
 	private String description;
@@ -90,5 +97,13 @@ public class ProductDoc implements Serializable{
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public Completion getSuggest() {
+		return suggest;
+	}
+
+	public void setSuggest(Completion suggest) {
+		this.suggest = suggest;
 	}
 }

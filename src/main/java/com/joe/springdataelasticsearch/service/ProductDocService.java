@@ -1,5 +1,7 @@
 package com.joe.springdataelasticsearch.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,4 +12,6 @@ public interface ProductDocService {
 	Page<ProductDoc> search(String keyword, Boolean isSelfRun, Pageable pageable);
 
 	DocumentPage<ProductDoc> aggregationSearch(String keyword, Boolean isSelfRun, Pageable pageable);
+	
+	List<String>  suggest(String keyword, int size);
 }

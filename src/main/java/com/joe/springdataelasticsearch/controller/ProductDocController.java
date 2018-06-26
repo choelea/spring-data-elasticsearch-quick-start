@@ -30,4 +30,9 @@ public class ProductDocController {
 			@RequestParam(defaultValue = "0") Integer pageNumber, @RequestParam(defaultValue = "10") Integer pageSize) {
 		return productDocService.aggregationSearch(keyword, isSelfRun, new PageRequest(pageNumber, pageSize));
 	}
+	
+	@GetMapping("/suggestions")
+	public List<String> suggestions(String keyword) {
+		return productDocService.suggest(keyword, 10);
+	}
 }
