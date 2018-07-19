@@ -3,12 +3,10 @@ package com.joe.springdataelasticsearch.document;
 import java.io.Serializable;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.CompletionField;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldIndex;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.core.completion.Completion;
 
 /**
  * Define Document 'product-index', 如果不指定type，会使用class的名称作为type， 5.0 后的版本是没有type的。
@@ -25,14 +23,14 @@ public class ProductDoc implements Serializable{
 	
 	public ProductDoc() {} // mandatory for Json Mapping
 
-	public ProductDoc(Long id, String name, String description, String type, Boolean isSelfRun) {
+	public ProductDoc(Long id, String name, String esname, String description, String type, Boolean isSelfRun) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.type = type;
 		this.isSelfRun = isSelfRun;
-		this.suggest=new Completion(new String[]{name});
+		this.suggest=new I18n(name,esname);
 	}
 
 	@Id
@@ -43,8 +41,8 @@ public class ProductDoc implements Serializable{
 	private String name;
 	public static final String _name="name";
 	
-	@CompletionField(analyzer="english", maxInputLength=100)
-	private Completion suggest;
+	@Field(type=FieldType.Nested)// cannot be Object? Needs to investigate
+	private I18n suggest;
 	public static final String _suggest="suggest";
 	
 	@Field(type=FieldType.String, analyzer="english")
@@ -99,11 +97,13 @@ public class ProductDoc implements Serializable{
 		this.type = type;
 	}
 
-	public Completion getSuggest() {
+	public I18n getSuggest() {
 		return suggest;
 	}
 
-	public void setSuggest(Completion suggest) {
+	public void setSuggest(I18n suggest) {
 		this.suggest = suggest;
 	}
+
+	
 }

@@ -114,13 +114,14 @@ public class ProductDocServiceImpl implements ProductDocService {
 	public List<String> suggest(String keyword, int size) {
 
 		CompletionSuggestionFuzzyBuilder completionSuggestionFuzzyBuilder = new CompletionSuggestionFuzzyBuilder(
-				suggestName).text(keyword).field(ProductDoc._suggest);
+				suggestName).text(keyword).field(ProductDoc._suggest+".en");
 
 		// when
 		SuggestResponse suggestResponse = elasticsearchTemplate.suggest(completionSuggestionFuzzyBuilder,
 				ProductDoc.class);
 		CompletionSuggestion completionSuggestion = suggestResponse.getSuggest().getSuggestion(suggestName);
-		List<CompletionSuggestion.Entry.Option> options = completionSuggestion.getEntries().get(0).getOptions();
+		List<CompletionSuggestion.Entry> entries = completionSuggestion.getEntries();
+		List<CompletionSuggestion.Entry.Option> options = entries.get(0).getOptions();
 		List<String> result = new ArrayList<>();
 		for (CompletionSuggestion.Entry.Option option : options) {
 			result.add(option.getText().toString());
