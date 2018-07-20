@@ -14,6 +14,9 @@ public class I18n {
 	@CompletionField(analyzer="english", maxInputLength=100)
 	private Completion en;
 	
+	public I18n() {
+		super();
+	}
 	public Completion getEs() {
 		return es;
 	}

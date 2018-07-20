@@ -35,6 +35,7 @@ public class ProductDoc implements Serializable{
 		this.updatedDate = updated;
 	}
 
+	
 	@Id
 	@Field(type=FieldType.Long, index=FieldIndex.not_analyzed)
 	private Long id;
@@ -43,21 +44,26 @@ public class ProductDoc implements Serializable{
 	private String name;
 	public static final String _name="name";
 	
+	
 	@Field(type=FieldType.Nested)// cannot be Object? Needs to investigate
 	private I18n suggest;
 	public static final String _suggest="suggest";
+	
 	
 	@Field(type=FieldType.String, analyzer="english")
 	private String description;
 	public static final String _description="description";
 	
+	
 	@Field(type=FieldType.String, index=FieldIndex.not_analyzed)
 	private String type;
 	public static final String _type="type";
 	
+	
 	@Field(type=FieldType.Boolean, index = FieldIndex.not_analyzed)
 	private Boolean isSelfRun;
 	public static final String _isSelfRun="isSelfRun";
+	
 	
 	@Field(type=FieldType.Date, index = FieldIndex.not_analyzed)
 	private Date updatedDate;

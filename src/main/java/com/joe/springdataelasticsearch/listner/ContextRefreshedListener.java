@@ -44,10 +44,7 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
 		list.add(new ProductDoc(6L, "Nokia is Note","Nokia es Note", "Nokia is an very old brand and famous", "SMARTPHONE", Boolean.FALSE, DateUtils.addDays(new Date(), -40)));
 		list.add(new ProductDoc(7L, "Nokia N90","Nokia N90", "Nokia N 90 is made by China", "GENERAL", Boolean.FALSE, DateUtils.addDays(new Date(), -10)));
 		list.add(new ProductDoc(8L, "Vivo Z1","Vivo Z1", "Vivo is made by China, It's very popular in China.", "GENERAL", Boolean.FALSE, DateUtils.addDays(new Date(), 60)));
-		list.add(new ProductDoc(9L, "Huawei Max3","Huawei Max3", "Huawei is designed / made by China", "SMARTPHONE", Boolean.FALSE, DateUtils.addDays(new Date(), 1)));
+		list.add(new ProductDoc(9L, "Huawei Max3","Huawei Max3", "is designed / made by China", "SMARTPHONE", Boolean.FALSE, DateUtils.addDays(new Date(), 1)));
 		return list;
 	}
-	
-	
-    
 }
