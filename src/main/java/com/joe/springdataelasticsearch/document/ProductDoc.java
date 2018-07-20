@@ -1,6 +1,7 @@
 package com.joe.springdataelasticsearch.document;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -23,7 +24,7 @@ public class ProductDoc implements Serializable{
 	
 	public ProductDoc() {} // mandatory for Json Mapping
 
-	public ProductDoc(Long id, String name, String esname, String description, String type, Boolean isSelfRun) {
+	public ProductDoc(Long id, String name, String esname, String description, String type, Boolean isSelfRun, Date updated) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -31,6 +32,7 @@ public class ProductDoc implements Serializable{
 		this.type = type;
 		this.isSelfRun = isSelfRun;
 		this.suggest=new I18n(name,esname);
+		this.updatedDate = updated;
 	}
 
 	@Id
@@ -57,6 +59,9 @@ public class ProductDoc implements Serializable{
 	private Boolean isSelfRun;
 	public static final String _isSelfRun="isSelfRun";
 	
+	@Field(type=FieldType.Date, index = FieldIndex.not_analyzed)
+	private Date updatedDate;
+	public static final String _updatedDate = "updatedDate";
 	public Boolean getIsSelfRun() {
 		return isSelfRun;
 	}
@@ -105,5 +110,11 @@ public class ProductDoc implements Serializable{
 		this.suggest = suggest;
 	}
 
-	
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
 }
