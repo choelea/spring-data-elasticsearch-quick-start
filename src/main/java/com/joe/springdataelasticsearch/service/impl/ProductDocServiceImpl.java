@@ -128,7 +128,7 @@ public class ProductDocServiceImpl implements ProductDocService {
 	@Override
 	public Page<ProductDoc> functionScoreSearch(String keyword, Boolean isSelfRun, Pageable pageable) {
 		FunctionScoreQueryBuilder query = QueryBuilders.functionScoreQuery(builder(keyword, isSelfRun))
-				.add(ScoreFunctionBuilders.gaussDecayFunction(ProductDoc._updatedDate,new Date(),"2d").setOffset("100d").setDecay(0.3))
+				.add(ScoreFunctionBuilders.gaussDecayFunction(ProductDoc._updatedDate,new Date(),"2d").setOffset("2d").setDecay(0.3))
 				.scoreMode("multiply").boostMode(CombineFunction.MULT);
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(query).withPageable(pageable).build();
 		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
