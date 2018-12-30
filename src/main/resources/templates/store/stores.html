@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Elasticsearch Example - Products search</title>
+  <title>Elasticsearch Example - Stores search</title>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
@@ -12,7 +12,7 @@
  
 <body>
 <div class="container">
-	<h1>Products Table</h1>
+	<h1>Stores Table</h1>
 	<div class="row col-md-12 table-responsive">
 		<table id="customerTable" class="table">
 			<thead>
@@ -23,11 +23,11 @@
 				</tr>
 			</thead>
 			<tbody>
-				 <tr th:each="product, rowStat: ${page.products}"
+				 <tr th:each="store, rowStat: ${page}"
 				 	 th:style="${rowStat.odd} ? 'color: gray' : 'color: blue;'">
-			        <td th:text="${product.id}"></td>
-					<td th:text="${product.name}"></td>
-					<td th:text="${product.description}"></td>
+			        <td th:text="${store.id}"></td>
+					<td th:text="${store.name}"></td>
+					<td th:text="${store.description}"></td>
 			    </tr>
 			</tbody>
 		</table>
