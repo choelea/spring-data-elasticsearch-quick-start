@@ -31,15 +31,32 @@ public class StoreDocServiceImpl implements StoreDocService {
 	private ExtResultMapper extResultMapper;
 
 	@Override
+	public Page<StoreDoc> searchInName(String keyword, Pageable pageable) {
+		QueryBuilder queryBuilder = null;
+		if(StringUtils.isEmpty(keyword)) {
+			queryBuilder = QueryBuilders.matchAllQuery();
+		}else {
+			queryBuilder = QueryBuilders.matchQuery(StoreDoc._name, keyword);
+		}
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).withPageable(pageable)
+				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1)).build();
+
+		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
+		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class,
+				extResultMapper);
+		return page;
+	}
+
+	@Override
 	public Page<StoreDoc> search(String keyword, Pageable pageable) {
 		QueryBuilder queryBuilder = null;
 		if(StringUtils.isEmpty(keyword)) {
 			queryBuilder = QueryBuilders.matchAllQuery();
 		}else {
-			queryBuilder = QueryBuilders.matchQuery("name", keyword);
+			queryBuilder = QueryBuilders.multiMatchQuery(keyword, StoreDoc._name, StoreDoc._mainProducts );
 		}
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).withPageable(pageable)
-				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1)).build();
+				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1), new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1)).build();
 
 		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
 		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class,

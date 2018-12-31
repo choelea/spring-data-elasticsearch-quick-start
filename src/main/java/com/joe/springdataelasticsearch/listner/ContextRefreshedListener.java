@@ -13,6 +13,7 @@ import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.stereotype.Component;
 
 import com.joe.springdataelasticsearch.document.ProductDoc;
+import com.joe.springdataelasticsearch.document.StoreDoc;
 import com.joe.springdataelasticsearch.document.StoreDocBuilder;
 import com.joe.springdataelasticsearch.repository.ProductDocRespository;
  
@@ -28,6 +29,10 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
 		elasticsearchTemplate.deleteIndex(ProductDoc.class);
 		elasticsearchTemplate.createIndex(ProductDoc.class);
 		elasticsearchTemplate.putMapping(ProductDoc.class);
+		
+		elasticsearchTemplate.deleteIndex(StoreDoc.class);
+		elasticsearchTemplate.createIndex(StoreDoc.class);
+		elasticsearchTemplate.putMapping(StoreDoc.class);
 		createTestData();
 	}
  
@@ -37,18 +42,20 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
 	}
 	
 	private void createStoreDocs() {
-		IndexQuery store1 = new StoreDocBuilder(0l).name("HuaWei Authorized Shop").description("Sell Mobile").buildIndex(); 
+		IndexQuery store1 = new StoreDocBuilder(0l).name("HuaWei Authorized Shop").mainProducts("Smart Phone").buildIndex(); 
 		elasticsearchTemplate.index(store1);
-		elasticsearchTemplate.index(new StoreDocBuilder(0l).name("XiaoMi Authorized Shop").description("Sell Mobile").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(1l).name("Oppo Authorized WuHan Shop Owned by Joe").description("Sell Mobile").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(2l).name("Meizu Authorized Shop").description("Sell Mobile").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(3l).name("Sung Authorized Shop").description("Sell Mobile").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(4l).name("Vivo Authorized Shop").description("Sell Mobile").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(5l).name("Lenovo Authorized  Shop").description("Sell Mobile").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(6l).name("Sony Authorized VIP Shop").description("Sell Mobile").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(7l).name("Apple Store").description("Sell Mobile").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(8l).name("Samsung Authorized Shop").description("Sell Mobile").buildIndex());
-		
+		elasticsearchTemplate.index(new StoreDocBuilder(0l).name("XiaoMi Authorized Shop").mainProducts("Smart Phone").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(1l).name("Oppo Authorized WuHan Shop Owned by Joe").mainProducts("Smart Phone").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(2l).name("Meizu Authorized Shop").mainProducts("Smart Phone").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(3l).name("Sung Authorized Shop").mainProducts("Smart Phone").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(4l).name("Vivo Authorized Shop").mainProducts("Smart Phone").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(5l).name("Lenovo Authorized  Shop").mainProducts("Smart Phone").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(6l).name("Sony Authorized VIP Shop").mainProducts("Smart Phone").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(7l).name("Apple Store").mainProducts("Ipad, Mac Pro").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(8l).name("Samsung Authorized Shop").mainProducts("Smart Phone").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(9l).name("Smart Shop").mainProducts("Smart Phone").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(10l).name("Mark's Mobile Shop").mainProducts("Smart Phone").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(11l).name("Jane's Mobile Shop").mainProducts("Smart Phone").buildIndex());
 	}
 
 	private void createProductDocs(){

@@ -14,8 +14,8 @@ public class StoreDocBuilder {
 		storeDoc.setName(name);
 		return this;
 	}
-	public StoreDocBuilder description(String description) {
-		storeDoc.setDescription(description);
+	public StoreDocBuilder mainProducts(String mainProducts) {
+		storeDoc.setMainProducts(mainProducts);
 		return this;
 	}
 	

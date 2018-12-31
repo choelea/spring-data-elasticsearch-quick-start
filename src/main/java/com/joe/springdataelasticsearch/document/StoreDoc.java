@@ -20,11 +20,11 @@ public class StoreDoc implements Serializable {
 	public StoreDoc() {
 	} // mandatory for Json Mapping
 
-	public StoreDoc(Long id, String name, String description, String type, Boolean isSelfRun, Date updated) {
+	public StoreDoc(Long id, String name, String mainProducts, String type, Boolean isSelfRun, Date updated) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.description = description;
+		this.mainProducts = mainProducts;
 	}
 
 	@Id
@@ -36,8 +36,8 @@ public class StoreDoc implements Serializable {
 	public static final String _name = "name";
 
 	@Field(type = FieldType.String, analyzer = "english")
-	private String description;
-	public static final String _description = "description";
+	private String mainProducts;
+	public static final String _mainProducts = "mainProducts";
 
 	public Long getId() {
 		return id;
@@ -55,12 +55,12 @@ public class StoreDoc implements Serializable {
 		this.name = name;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getMainProducts() {
+		return mainProducts;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setMainProducts(String mainProducts) {
+		this.mainProducts = mainProducts;
 	}
 
 }

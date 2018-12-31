@@ -17,6 +17,13 @@ public class StorePageController {
 	@Autowired
 	private StoreDocService storeDocService;
 
+	@GetMapping("/store-names")
+    public String searchStoreNames(Model model,String keyword) {
+		Page<StoreDoc> page =  storeDocService.searchInName(keyword, new PageRequest(0, 10));
+		model.addAttribute("keyword", keyword);
+        model.addAttribute("page", page);
+        return "/store/storeNames";
+    }
 	@GetMapping("/stores")
     public String searchStores(Model model,String keyword) {
 		Page<StoreDoc> page =  storeDocService.search(keyword, new PageRequest(0, 10));
