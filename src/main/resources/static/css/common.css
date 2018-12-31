@@ -1,0 +1,32 @@
+
+.header {
+    color: #CCC;
+    background: #2C323D;
+  }
+  
+  .header .container-fluid {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  
+  .header a {
+    color: #DDD;
+  }
+  
+  .header a:hover {
+    color: #FFF;
+    text-decoration: none;
+  }
+  
+  .header .logo {
+    margin-left: 20px;
+    font-size: 20px;
+    line-height: 34px;
+  }
+  
+  .header .search-form {
+    margin-right: 20px;
+  }
+  em{
+  	color: red
+  }	

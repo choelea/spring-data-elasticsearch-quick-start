@@ -13,7 +13,6 @@ import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.stereotype.Component;
 
 import com.joe.springdataelasticsearch.document.ProductDoc;
-import com.joe.springdataelasticsearch.document.StoreDoc;
 import com.joe.springdataelasticsearch.document.StoreDocBuilder;
 import com.joe.springdataelasticsearch.repository.ProductDocRespository;
  
@@ -41,12 +40,12 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
 		IndexQuery store1 = new StoreDocBuilder(0l).name("HuaWei Authorized Shop").description("Sell Mobile").buildIndex(); 
 		elasticsearchTemplate.index(store1);
 		elasticsearchTemplate.index(new StoreDocBuilder(0l).name("XiaoMi Authorized Shop").description("Sell Mobile").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(1l).name("Oppo Authorized Shop").description("Sell Mobile").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(1l).name("Oppo Authorized WuHan Shop Owned by Joe").description("Sell Mobile").buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(2l).name("Meizu Authorized Shop").description("Sell Mobile").buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(3l).name("Sung Authorized Shop").description("Sell Mobile").buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(4l).name("Vivo Authorized Shop").description("Sell Mobile").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(5l).name("Lenovo Authorized Shop").description("Sell Mobile").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(6l).name("Sony Authorized Shop").description("Sell Mobile").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(5l).name("Lenovo Authorized  Shop").description("Sell Mobile").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(6l).name("Sony Authorized VIP Shop").description("Sell Mobile").buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(7l).name("Apple Store").description("Sell Mobile").buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(8l).name("Samsung Authorized Shop").description("Sell Mobile").buildIndex());
 		

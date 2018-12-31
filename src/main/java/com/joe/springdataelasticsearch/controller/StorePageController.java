@@ -20,6 +20,7 @@ public class StorePageController {
 	@GetMapping("/stores")
     public String searchStores(Model model,String keyword) {
 		Page<StoreDoc> page =  storeDocService.search(keyword, new PageRequest(0, 10));
+		model.addAttribute("keyword", keyword);
         model.addAttribute("page", page);
         return "/store/stores";
     }
