@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Elasticsearch Example - Products search</title>
+  <title>Elasticsearch Example - Stores search</title>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
@@ -19,7 +19,7 @@
           <a href="http://tech.jiu-shu.com/" class="logo">旧书 - IT Technologies</a>
         </div>
         <div class="col-sm-3">
-          <form class="search-form form-inline pull-right" action="/page/products">
+          <form class="search-form form-inline pull-right" action="/page/stores/fuzzy">
             <div class="form-group">
               <label class="sr-only" for="search">搜索</label>
               <input type="text" class="form-control" name="keyword" id="search" size="30" th:value="${keyword}" placeholder="搜索"></input>
@@ -30,22 +30,22 @@
     </div>
   </header>
 	<div class="container">
-	<h1>Search Products</h1>
+	<h1>Search Stores (name only)</h1>
 	<div class="row col-md-12 table-responsive">
 		<table id="customerTable" class="table">
 			<thead>
 				<tr>
 					<th>Id</th>
 					<th>Name</th>
-					<th>Description</th>
+					<th>Main Products</th>
 				</tr>
 			</thead>
 			<tbody>
-				 <tr th:each="product, rowStat: ${page.products}"
+				 <tr th:each="store, rowStat: ${page}"
 				 	 th:style="'color: gray'">
-			        <td th:text="${product.id}"></td>
-					<td th:utext="${product.name}"></td>
-					<td th:utext="${product.description}"></td>
+			        <td th:text="${store.id}"></td>
+					<td th:utext="${store.name}"></td>
+					<td th:utext="${store.mainProducts}"></td>
 			    </tr>
 			</tbody>
 		</table>

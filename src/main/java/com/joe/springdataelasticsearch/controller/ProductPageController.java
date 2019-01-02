@@ -21,6 +21,7 @@ public class ProductPageController {
     public String searchProducts(Model model,String keyword) {
 		DocumentPage<ProductDoc> page =  productDocService.aggregationSearch(keyword, false, new PageRequest(0, 10));
         model.addAttribute("page", page);
+        model.addAttribute("keyword",keyword);
         return "/product/products";
     }
 }

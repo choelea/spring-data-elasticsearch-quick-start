@@ -31,4 +31,11 @@ public class StorePageController {
         model.addAttribute("page", page);
         return "/store/stores";
     }
+	@GetMapping("/stores/fuzzy")
+    public String searchStoresFuzzily(Model model,String keyword) {
+		Page<StoreDoc> page =  storeDocService.searchFuzzily(keyword, new PageRequest(0, 10));
+		model.addAttribute("keyword", keyword);
+        model.addAttribute("page", page);
+        return "/store/storeFuzzy";
+    }
 }
