@@ -57,6 +57,7 @@ public class ExtResultMapper extends AbstractResultMapper {
 				}
 				populateScriptFields(result, hit);
 				populateHighLightedFields(result, hit.getHighlightFields());
+				System.out.println(result.toString() + "|"+hit.getScore());
 				results.add(result);
 			}
 		}

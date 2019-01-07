@@ -47,15 +47,15 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
 		elasticsearchTemplate.index(new StoreDocBuilder(0l).name("XiaoMi Authorized Shop").mainProducts("Smart Phone").buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(1l).name("Oppo Authorized WuHan Shop Owned by Joe").mainProducts("Smart Phone").buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(2l).name("Meizu Authorized Shop Double Authorized").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(3l).name("Sung Authorized Shop").mainProducts("Smart Phone").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(3l).name("Sung Authorized Shop").mainProducts("Smart Phone , Stupid Phone").buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(4l).name("Vivo Authorized Shop").mainProducts("Smart Phone").buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(5l).name("Lenovo Authorized  Shop").mainProducts("Smart Phone").buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(6l).name("Sony Authorized VIP Shop").mainProducts("Smart Phone").buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(7l).name("Apple Store").mainProducts("Ipad, Mac Pro").buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(8l).name("Samsung Authorized Shop").mainProducts("Smart Phone").buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(9l).name("Smart Shop").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(10l).name("Mark's Mobile Shop").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(11l).name("Charlice Mobile Shop").mainProducts("Smart Phone").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(10l).name("Mark's Mobile Shop").mainProducts("Smart Phone, Stupid Phone").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(11l).name("Charlice Mobile Shop").mainProducts("Smart Phone, Old Phone").buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(12l).name("Charlice Mobile Shop").mainProducts("Smart Phone").buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(13l).name("Charlice Mobile Shop").mainProducts("Smart Phone").buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(14l).name("Charlice Mobile Shop").mainProducts("Smart Phone").buildIndex());

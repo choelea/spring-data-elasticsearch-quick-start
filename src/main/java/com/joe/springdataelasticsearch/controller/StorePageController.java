@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.joe.springdataelasticsearch.document.StoreDoc;
 import com.joe.springdataelasticsearch.service.StoreDocService;
+import com.joe.springdataelasticsearch.repository.StoreDocRepository;
 
 @Controller
 @RequestMapping("/page")
@@ -17,23 +18,27 @@ public class StorePageController {
 	@Autowired
 	private StoreDocService storeDocService;
 
+	@Autowired
+	private StoreDocRepository storeDocRepository;
+	
 	@GetMapping("/store-names")
     public String searchStoreNames(Model model,String keyword) {
-		Page<StoreDoc> page =  storeDocService.searchInName(keyword, new PageRequest(0, 10));
+		Page<StoreDoc> page =  storeDocService.searchInName(keyword, new PageRequest(0, 20));
+//		Page<StoreDoc> page =  storeDocRepository.findByName(keyword, new PageRequest(0, 20));
 		model.addAttribute("keyword", keyword);
         model.addAttribute("page", page);
         return "/store/storeNames";
     }
 	@GetMapping("/stores")
     public String searchStores(Model model,String keyword) {
-		Page<StoreDoc> page =  storeDocService.search(keyword, new PageRequest(0, 10));
+		Page<StoreDoc> page =  storeDocService.search(keyword, new PageRequest(0, 20));
 		model.addAttribute("keyword", keyword);
         model.addAttribute("page", page);
         return "/store/stores";
     }
 	@GetMapping("/stores/fuzzy")
     public String searchStoresFuzzily(Model model,String keyword) {
-		Page<StoreDoc> page =  storeDocService.searchFuzzily(keyword, new PageRequest(0, 10));
+		Page<StoreDoc> page =  storeDocService.searchFuzzily(keyword, new PageRequest(0, 20));
 		model.addAttribute("keyword", keyword);
         model.addAttribute("page", page);
         return "/store/storeFuzzy";

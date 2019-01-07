@@ -63,4 +63,8 @@ public class StoreDoc implements Serializable {
 		this.mainProducts = mainProducts;
 	}
 
+	@Override
+	public String toString() {
+		return "StoreDoc [id=" + id + ", name=" + name + ", mainProducts=" + mainProducts + "]";
+	}	
 }
