@@ -19,6 +19,10 @@ public class StoreDocBuilder {
 		return this;
 	}
 	
+	public StoreDocBuilder fullText() {
+		storeDoc.setFullText(storeDoc.getName()+" "+storeDoc.getMainProducts());
+		return this;
+	}
 	public IndexQuery buildIndex() {
 		IndexQuery indexQuery = new IndexQuery();
 		indexQuery.setId(storeDoc.getId().toString());

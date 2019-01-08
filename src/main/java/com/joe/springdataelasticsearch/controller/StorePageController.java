@@ -44,6 +44,14 @@ public class StorePageController {
         model.addAttribute("page", page);
         return "/store/stores";
     }
+	@GetMapping("/stores-cross-fields-search")
+    public String searchStoresCrossFields(Model model,String keyword) {
+		Page<StoreDoc> page =  storeDocService.searchCorssFields(keyword, new PageRequest(0, 20));
+		model.addAttribute("keyword", keyword);
+        model.addAttribute("page", page);
+        return "/store/stores-cross-fields-search";
+    }
+	
 	@GetMapping("/stores-no-idf")
     public String searchStoresFunctionally(Model model,String keyword) {
 		Page<StoreDoc> page =  storeDocService.searchFunctionally(keyword, new PageRequest(0, 20));

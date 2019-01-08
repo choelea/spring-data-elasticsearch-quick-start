@@ -39,6 +39,10 @@ public class StoreDoc implements Serializable {
 	private String mainProducts;
 	public static final String _mainProducts = "mainProducts";
 
+	@Field(type = FieldType.String, analyzer = "english")
+	private String fullText;
+	public static final String _fullText = "fullText";
+	
 	public Long getId() {
 		return id;
 	}
@@ -61,6 +65,14 @@ public class StoreDoc implements Serializable {
 
 	public void setMainProducts(String mainProducts) {
 		this.mainProducts = mainProducts;
+	}
+
+	public String getFullText() {
+		return fullText;
+	}
+
+	public void setFullText(String fullText) {
+		this.fullText = fullText;
 	}
 
 	@Override

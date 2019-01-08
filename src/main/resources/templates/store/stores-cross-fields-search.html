@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Elasticsearch Example - Stores search</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="/css/common.css"/>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</head>
+ 
+<body>
+	<header class="header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-9">
+          <a href="http://tech.jiu-shu.com/" class="logo">旧书 - IT Technologies</a>
+        </div>
+        <div class="col-sm-3">
+          <form class="search-form form-inline pull-right" action="/page/stores-cross-fields-search">
+            <div class="form-group">
+              <label class="sr-only" for="search">搜索</label>
+              <input type="text" class="form-control" name="keyword" id="search" size="30" th:value="${keyword}" placeholder="搜索"></input>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
+	<div class="container">
+	<h1>Search Stores (search in both name and main products) 跨字段策略</h1>
+	<p>在页面【<a href="/page/stores" target="_blank">搜索name和mainProducts字段</a>】中，采用了默认的multi_match； 
+	由于受到IDF的影响，当搜索Apple Phone的时候，	店铺的name中包含apple一个关键词，但是main products中未包含任何关键词的记录会排在了最前面。
+	而那些main products中包含了Apple Phone两个词的排在了后面。原因是： IDF是独立作用在各个字段的。</p>
+	<p>这里示例采用跨字段类型的多字段搜索可以解决这个问题。</p>
+	<div class="row col-md-12 table-responsive">
+		<table id="customerTable" class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Main Products</th>
+				</tr>
+			</thead>
+			<tbody>
+				 <tr th:each="store, rowStat: ${page}"
+				 	 th:style="'color: gray'">
+			        <td th:text="${store.id}"></td>
+					<td th:utext="${store.name}"></td>
+					<td th:utext="${store.mainProducts}"></td>
+			    </tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</body>
+</html>

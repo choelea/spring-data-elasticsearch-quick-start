@@ -2,6 +2,7 @@ package com.joe.springdataelasticsearch.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.common.unit.Fuzziness;
+import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
@@ -105,6 +106,38 @@ public class StoreDocServiceImpl implements StoreDocService {
 					extResultMapper);
 	        return page;
 	    
+	}
+
+	@Override
+	public Page<StoreDoc> searchFulltext(String keyword, PageRequest pageable) {
+		QueryBuilder queryBuilder = null;
+		if(StringUtils.isEmpty(keyword)) {
+			queryBuilder = QueryBuilders.matchAllQuery();
+		}else {
+			queryBuilder = QueryBuilders.matchQuery(StoreDoc._fullText,keyword);
+		}
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).withPageable(pageable)
+				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1), new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1)).build();
+
+		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
+		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class, extResultMapper);
+		return page;
+	}
+
+	@Override
+	public Page<StoreDoc> searchCorssFields(String keyword, PageRequest pageable) {
+		QueryBuilder queryBuilder = null;
+		if(StringUtils.isEmpty(keyword)) {
+			queryBuilder = QueryBuilders.matchAllQuery();
+		}else {
+			queryBuilder = QueryBuilders.multiMatchQuery(keyword, StoreDoc._name, StoreDoc._mainProducts ).type(MultiMatchQueryBuilder.Type.BEST_FIELDS);
+		}
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).withPageable(pageable)
+				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1), new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1)).build();
+
+		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
+		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class, extResultMapper);
+		return page;
 	}
 
 	 

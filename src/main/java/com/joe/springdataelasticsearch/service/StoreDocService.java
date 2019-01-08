@@ -26,5 +26,21 @@ public interface StoreDocService {
 	 */
 	Page<StoreDoc> searchFunctionally(String keyword, Pageable pageable);
 	
-	Page<StoreDoc> searchFuzzily(String keyword, PageRequest pageRequest);
+	Page<StoreDoc> searchFuzzily(String keyword, PageRequest pageable);
+	
+	/**
+	 * Search in full text to avoid cross field IDF impact; But you cannot highlight the field that are not in search fields. 
+	 * @param keyword
+	 * @param pageable
+	 * @return
+	 */
+	Page<StoreDoc> searchFulltext(String keyword, PageRequest pageable);
+	
+	/**
+	 * Search cross fields: https://www.elastic.co/guide/en/elasticsearch/guide/current/_cross_fields_queries.html
+	 * @param keyword
+	 * @param pageable
+	 * @return
+	 */
+	Page<StoreDoc> searchCorssFields(String keyword, PageRequest pageable);
 }

@@ -42,27 +42,30 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
 	}
 	
 	private void createStoreDocs() {
-		IndexQuery store1 = new StoreDocBuilder(0l).name("HuaWei Authorized Shop").mainProducts("Smart Phone").buildIndex(); 
+		IndexQuery store1 = new StoreDocBuilder(0l).name("HuaWei Authorized Shop").mainProducts("Smart Phone").fullText().buildIndex(); 
 		elasticsearchTemplate.index(store1);
-		elasticsearchTemplate.index(new StoreDocBuilder(0l).name("XiaoMi Authorized Shop").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(1l).name("Oppo Authorized WuHan Shop Owned by Joe").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(2l).name("Meizu Authorized Shop Double Authorized").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(3l).name("Sung Authorized Shop").mainProducts("Smart Phone , Stupid Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(4l).name("Vivo Authorized Shop").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(5l).name("Lenovo Authorized  Shop").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(6l).name("Sony Authorized VIP Shop").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(7l).name("Apple Store").mainProducts("Ipad, Mac Pro").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(8l).name("Samsung Authorized Shop").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(9l).name("Smart Shop").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(10l).name("Mark's Mobile Shop").mainProducts("Smart Phone, Stupid Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(11l).name("Charlice Mobile Shop").mainProducts("Smart Phone, Old Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(12l).name("Charlice Mobile Shop").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(13l).name("Charlice Mobile Shop").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(14l).name("Charlice Mobile Shop").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(15l).name("Charlice Mobile Shop").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(16l).name("Jane's Mobile Shop").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(17l).name("Charlise Shop").mainProducts("Smart Phone").buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(15l).name("Charlice Shop").mainProducts("Smart Phone").buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(0l).name("XiaoMi Authorized Shop").mainProducts("Smart Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(1l).name("Oppo Authorized WuHan Shop Owned by Joe").mainProducts("Smart Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(2l).name("Meizu Authorized Shop Double Authorized").mainProducts("Smart Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(3l).name("Sung Authorized Shop").mainProducts("Smart Phone , Stupid Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(4l).name("Vivo Authorized Shop").mainProducts("Smart Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(5l).name("Lenovo Authorized  Shop").mainProducts("Stupid Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(6l).name("Sony Authorized VIP Shop").mainProducts("Stupid Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(7l).name("Apple Store").mainProducts("Ipad, Mac Pro").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(8l).name("Samsung Authorized Shop").mainProducts("Smart Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(9l).name("Smart Shop").mainProducts("Smart Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(10l).name("Mark's Mobile Shop").mainProducts("Smart Phone, Stupid Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(11l).name("Charlice Mobile Shop").mainProducts("Apple Phone, Old Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(12l).name("Charlice Mobile Shop").mainProducts("Apple Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(13l).name("Charlice Mobile Shop").mainProducts("Apple Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(14l).name("Charlice Mobile Shop").mainProducts("Apple Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(15l).name("Charlice Fruit Shop").mainProducts("Pear, Watermelon").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(16l).name("Jane's Mobile Shop").mainProducts("Smart Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(17l).name("Charlise Shop").mainProducts("Smart Phone").fullText().buildIndex());
+		
+		for(int i=18; i<30; i++) {
+			elasticsearchTemplate.index(new StoreDocBuilder(Long.valueOf(i).longValue()).name("Charlise Shop").mainProducts("Apple Phone").fullText().buildIndex());
+		}
 	}
 
 	private void createProductDocs(){
