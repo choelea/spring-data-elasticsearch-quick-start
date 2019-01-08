@@ -24,11 +24,19 @@ public class StorePageController {
 	@GetMapping("/store-names")
     public String searchStoreNames(Model model,String keyword) {
 		Page<StoreDoc> page =  storeDocService.searchInName(keyword, new PageRequest(0, 20));
-//		Page<StoreDoc> page =  storeDocRepository.findByName(keyword, new PageRequest(0, 20));
 		model.addAttribute("keyword", keyword);
         model.addAttribute("page", page);
         return "/store/storeNames";
     }
+	
+	@GetMapping("/store-names-strict")
+    public String searchStoreNamesStrict(Model model,String keyword) {
+		Page<StoreDoc> page =  storeDocRepository.findByName(keyword, new PageRequest(0, 20));
+		model.addAttribute("keyword", keyword);
+        model.addAttribute("page", page);
+        return "/store/storeNamesStrict";
+    }
+	
 	@GetMapping("/stores")
     public String searchStores(Model model,String keyword) {
 		Page<StoreDoc> page =  storeDocService.search(keyword, new PageRequest(0, 20));
@@ -36,6 +44,14 @@ public class StorePageController {
         model.addAttribute("page", page);
         return "/store/stores";
     }
+	@GetMapping("/stores-no-idf")
+    public String searchStoresFunctionally(Model model,String keyword) {
+		Page<StoreDoc> page =  storeDocService.searchFunctionally(keyword, new PageRequest(0, 20));
+		model.addAttribute("keyword", keyword);
+        model.addAttribute("page", page);
+        return "/store/stores-no-idf";
+    }
+	
 	@GetMapping("/stores/fuzzy")
     public String searchStoresFuzzily(Model model,String keyword) {
 		Page<StoreDoc> page =  storeDocService.searchFuzzily(keyword, new PageRequest(0, 20));

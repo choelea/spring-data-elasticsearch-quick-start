@@ -4,6 +4,8 @@ import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.search.highlight.HighlightBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,8 +63,7 @@ public class StoreDocServiceImpl implements StoreDocService {
 				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1), new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1)).build();
 
 		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
-		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class,
-				extResultMapper);
+		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class, extResultMapper);
 		return page;
 	}
 
@@ -78,9 +79,32 @@ public class StoreDocServiceImpl implements StoreDocService {
 				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1)).build();
 
 		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
-		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class,
-				extResultMapper);
+		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class, extResultMapper);
 		return page;
+	}
+
+	@Override
+	public Page<StoreDoc> searchFunctionally(String keyword, Pageable pageable) {    
+	 
+	        // Function Score Query
+	        FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery()
+	                .add(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery(StoreDoc._name, keyword)),
+	                    ScoreFunctionBuilders.weightFactorFunction(1000))
+	                .add(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery(StoreDoc._mainProducts, keyword)),
+	                        ScoreFunctionBuilders.weightFactorFunction(100));
+	 
+	        // 创建搜索 DSL 查询
+	        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+	        		.withQuery(functionScoreQueryBuilder)
+	                .withPageable(pageable)	                
+	                .withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1), new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1)).build();;
+	        		
+	        LOGGER.info("\n searchFunctionally(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
+	 
+	        Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class,
+					extResultMapper);
+	        return page;
+	    
 	}
 
 	 

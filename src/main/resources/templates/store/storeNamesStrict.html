@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Elasticsearch Example - Stores search</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="/css/common.css"/>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</head>
+ 
+<body>
+	<header class="header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-9">
+          <a href="http://tech.jiu-shu.com/" class="logo">旧书 - IT Technologies</a>
+        </div>
+        <div class="col-sm-3">
+          <form class="search-form form-inline pull-right" action="/page/store-names-strict">
+            <div class="form-group">
+              <label class="sr-only" for="search">搜索</label>
+              <input type="text" class="form-control" name="keyword" id="search" size="30" th:value="${keyword}" placeholder="搜索"></input>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
+	<div class="container">
+	<h1>Search Stores (name only, 搜索包含关键词拆分后的所有单词的文本档)</h1>
+	<div class="row col-md-12 table-responsive">
+		<table id="customerTable" class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Main Products</th>
+				</tr>
+			</thead>
+			<tbody>
+				 <tr th:each="store, rowStat: ${page}"
+				 	 th:style="'color: gray'">
+			        <td th:text="${store.id}"></td>
+					<td th:utext="${store.name}"></td>
+					<td th:utext="${store.mainProducts}"></td>
+			    </tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</body>
+</html>
