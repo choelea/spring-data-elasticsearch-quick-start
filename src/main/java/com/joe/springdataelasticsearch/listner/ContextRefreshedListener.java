@@ -9,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.stereotype.Component;
 
+import com.joe.springdataelasticsearch.document.I18nField;
 import com.joe.springdataelasticsearch.document.ProductDoc;
 import com.joe.springdataelasticsearch.document.StoreDoc;
 import com.joe.springdataelasticsearch.document.StoreDocBuilder;
+import com.joe.springdataelasticsearch.document.SupplierDoc;
+import com.joe.springdataelasticsearch.document.SupplierDocBuilder;
 import com.joe.springdataelasticsearch.repository.ProductDocRespository;
  
 @Component
@@ -33,17 +35,36 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
 		elasticsearchTemplate.deleteIndex(StoreDoc.class);
 		elasticsearchTemplate.createIndex(StoreDoc.class);
 		elasticsearchTemplate.putMapping(StoreDoc.class);
+		
+		
+		elasticsearchTemplate.deleteIndex(SupplierDoc.class);
+		elasticsearchTemplate.createIndex(SupplierDoc.class);
+		elasticsearchTemplate.putMapping(SupplierDoc.class);
 		createTestData();
 	}
  
 	private void createTestData(){
 		createProductDocs();
 		createStoreDocs();
+		createSupplierDocs();
 	}
 	
+	private void createSupplierDocs() {		
+	    
+		I18nField  apple7Plug = new I18nField("Apple 7 Plus", "Apple Plus", null, null);
+		I18nField  samsungs9 = new I18nField("Samsung Galaxy S9", "Apple Plus", null, null);
+		I18nField  samsungs8 = new I18nField("Samsung Galaxy S8", "Apple Plus", null, null);
+		I18nField  apple6Plus = new I18nField("Apple 6 plus", "Apple Plus", null, null);
+		I18nField  appleXPlus = new I18nField("Apple X", "Apple Plus", null, null);
+		
+		elasticsearchTemplate.index(new SupplierDocBuilder(0l).name("Apple Authorized Shop").mainProducts(apple7Plug, samsungs9).buildIndex());
+		elasticsearchTemplate.index(new SupplierDocBuilder(1l).name("Shop Owned by Joe").mainProducts(samsungs8, apple7Plug).buildIndex());
+		elasticsearchTemplate.index(new SupplierDocBuilder(2l).name("Jiu-shu Shop").mainProducts(apple7Plug, samsungs9, samsungs8, apple6Plus, appleXPlus).buildIndex());
+		elasticsearchTemplate.index(new SupplierDocBuilder(3l).name("Sung Authorized Shop").mainProducts(samsungs8).buildIndex());
+		
+	}
+
 	private void createStoreDocs() {
-		IndexQuery store1 = new StoreDocBuilder(0l).name("HuaWei Authorized Shop").mainProducts("Smart Phone").fullText().buildIndex(); 
-		elasticsearchTemplate.index(store1);
 		elasticsearchTemplate.index(new StoreDocBuilder(0l).name("XiaoMi Authorized Shop").mainProducts("Smart Phone").fullText().buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(1l).name("Oppo Authorized WuHan Shop Owned by Joe").mainProducts("Smart Phone").fullText().buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(2l).name("Meizu Authorized Shop Double Authorized").mainProducts("Smart Phone").fullText().buildIndex());

@@ -19,8 +19,6 @@ public class DocumentPage<T> implements Serializable{
 		this.pageable = pageable;
 	}
 	
-	
-
 	public Pageable getPageable() {
 		return pageable;
 	}

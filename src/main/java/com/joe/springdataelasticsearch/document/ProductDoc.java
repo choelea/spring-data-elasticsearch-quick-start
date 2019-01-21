@@ -31,7 +31,7 @@ public class ProductDoc implements Serializable{
 		this.description = description;
 		this.type = type;
 		this.isSelfRun = isSelfRun;
-		this.suggest=new I18n(name,esname);
+		this.suggest=new I18nCompletion(name,esname);
 		this.updatedDate = updated;
 	}
 
@@ -46,7 +46,7 @@ public class ProductDoc implements Serializable{
 	
 	
 	@Field(type=FieldType.Nested)// cannot be Object? Needs to investigate
-	private I18n suggest;
+	private I18nCompletion suggest;
 	public static final String _suggest="suggest";
 	
 	
@@ -108,11 +108,11 @@ public class ProductDoc implements Serializable{
 		this.type = type;
 	}
 
-	public I18n getSuggest() {
+	public I18nCompletion getSuggest() {
 		return suggest;
 	}
 
-	public void setSuggest(I18n suggest) {
+	public void setSuggest(I18nCompletion suggest) {
 		this.suggest = suggest;
 	}
 

@@ -8,19 +8,19 @@ import org.springframework.data.elasticsearch.core.completion.Completion;
  * @author joe
  *
  */
-public class I18n {
+public class I18nCompletion {
 	@CompletionField(analyzer="spanish", maxInputLength=100)
 	private Completion  es;
 	@CompletionField(analyzer="english", maxInputLength=100)
 	private Completion en;
 	
-	public I18n() {
+	public I18nCompletion() {
 		super();
 	}
 	public Completion getEs() {
 		return es;
 	}
-	public I18n(String en, String es) {
+	public I18nCompletion(String en, String es) {
 		super();
 		this.es = new Completion(new String[]{es});
 		this.en = new Completion(new String[]{en});;
