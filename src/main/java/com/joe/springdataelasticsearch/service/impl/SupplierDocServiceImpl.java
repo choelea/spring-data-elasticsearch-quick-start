@@ -55,11 +55,9 @@ public class SupplierDocServiceImpl implements SupplierDocService {
 		String[] tokens = ElasticsearchUtils.normalize(keyword);
 		for (SupplierDoc supplierDoc : list) {
 			for (I18nField field : supplierDoc.getMainProducts()) {
-				field.setTermScore(ElasticsearchUtils.termScore(field.getEn(), tokens));
+				ElasticsearchUtils.scoreAndHighlightEn(field, tokens);
 			}
 			Collections.sort(supplierDoc.getMainProducts());
-		}
-		
-		
+		}	
 	}
 }

@@ -47,7 +47,7 @@
 					<td th:utext="${supplier.name}"></td>
 					<td>
 						<span th:each="product, rowStat: ${supplier.mainProducts}">
-							<span th:text="${product.en}" />,
+							<span th:utext="${product.html}" />,
 						</span>
 					</td>
 			    </tr>

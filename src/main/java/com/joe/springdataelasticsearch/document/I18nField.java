@@ -22,6 +22,8 @@ public class I18nField implements Comparable<I18nField>{
 	private String ru;
 	
 	@JsonIgnore
+	private String html;
+	@JsonIgnore
 	private int termScore = 0;
 	
 	public I18nField() {
@@ -75,6 +77,14 @@ public class I18nField implements Comparable<I18nField>{
 
 	public void setRu(String ru) {
 		this.ru = ru;
+	}
+
+	public String getHtml() {
+		return html;
+	}
+
+	public void setHtml(String html) {
+		this.html = html;
 	}
 
 	@JsonIgnore
