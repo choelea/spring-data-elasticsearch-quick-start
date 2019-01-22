@@ -1,5 +1,6 @@
 package com.joe.springdataelasticsearch.controller;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +20,12 @@ public class SupplierPageController {
  
 	@GetMapping("/suppliers")
     public String searchSuppliers(Model model,String keyword) {
-		Page<SupplierDoc> page =  supplierDocService.search(keyword, new PageRequest(0, 20));
+		Page<SupplierDoc> page = null;
+		if(StringUtils.isEmpty(keyword)) {
+			page = supplierDocService.findAll(new PageRequest(0, 20));
+		}else {
+			page =  supplierDocService.search(keyword, new PageRequest(0, 20));			
+		}
 		model.addAttribute("keyword", keyword);
         model.addAttribute("page", page);
         return "/supplier/suppliers";

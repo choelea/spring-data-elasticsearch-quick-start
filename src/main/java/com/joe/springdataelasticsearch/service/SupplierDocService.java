@@ -14,4 +14,6 @@ public interface SupplierDocService {
 	 * @return
 	 */
 	Page<SupplierDoc> search(String keyword, Pageable pageable);
+	
+	Page<SupplierDoc> findAll(Pageable pageable);
 }

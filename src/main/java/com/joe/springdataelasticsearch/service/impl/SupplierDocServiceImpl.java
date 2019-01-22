@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.highlight.HighlightBuilder;
 import org.slf4j.Logger;
@@ -59,5 +60,14 @@ public class SupplierDocServiceImpl implements SupplierDocService {
 			}
 			Collections.sort(supplierDoc.getMainProducts());
 		}	
+	}
+
+	@Override
+	public Page<SupplierDoc> findAll(Pageable pageable) {
+		QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).withPageable(pageable).build();
+
+		Page<SupplierDoc> page = elasticsearchTemplate.queryForPage(searchQuery, SupplierDoc.class, extResultMapper);
+		return page;
 	}
 }

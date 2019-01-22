@@ -48,7 +48,7 @@ public class ElasticsearchUtils {
 	    		}
 			}
 		}
-	    field.setHtml(StringUtils.join(sourceStrs, " "));
+	    field.setEn(StringUtils.join(sourceStrs, " "));
 	    field.setTermScore(result);
 	}
 }
