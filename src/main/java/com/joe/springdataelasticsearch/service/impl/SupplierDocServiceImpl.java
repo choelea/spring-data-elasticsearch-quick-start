@@ -1,5 +1,8 @@
 package com.joe.springdataelasticsearch.service.impl;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.highlight.HighlightBuilder;
@@ -13,7 +16,9 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 
+import com.joe.springdataelasticsearch.core.ElasticsearchUtils;
 import com.joe.springdataelasticsearch.core.ExtResultMapper;
+import com.joe.springdataelasticsearch.document.I18nField;
 import com.joe.springdataelasticsearch.document.SupplierDoc;
 import com.joe.springdataelasticsearch.service.SupplierDocService;
 
@@ -42,6 +47,19 @@ public class SupplierDocServiceImpl implements SupplierDocService {
 
 		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
 		Page<SupplierDoc> page = elasticsearchTemplate.queryForPage(searchQuery, SupplierDoc.class, extResultMapper);
+		sortNestedObject(page.getContent(), keyword);
 		return page;
+	}
+	
+	private void sortNestedObject(List<SupplierDoc> list, String keyword) {
+		String[] tokens = ElasticsearchUtils.normalize(keyword);
+		for (SupplierDoc supplierDoc : list) {
+			for (I18nField field : supplierDoc.getMainProducts()) {
+				field.setTermScore(ElasticsearchUtils.termScore(field.getEn(), tokens));
+			}
+			Collections.sort(supplierDoc.getMainProducts());
+		}
+		
+		
 	}
 }

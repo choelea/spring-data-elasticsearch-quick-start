@@ -2,6 +2,8 @@ package com.joe.springdataelasticsearch.document;
 
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 
+import com.google.common.collect.Lists;
+
 public class SupplierDocBuilder {
 	private SupplierDoc supplierDoc;
 	
@@ -14,9 +16,8 @@ public class SupplierDocBuilder {
 		supplierDoc.setName(name);
 		return this;
 	}
-	public SupplierDocBuilder mainProducts(I18nField ... i18ns) {
-		
-		supplierDoc.setMainProducts(i18ns);
+	public SupplierDocBuilder mainProducts(I18nField ... i18ns) {		
+		supplierDoc.setMainProducts(Lists.newArrayList(i18ns));
 		return this;
 	}
 

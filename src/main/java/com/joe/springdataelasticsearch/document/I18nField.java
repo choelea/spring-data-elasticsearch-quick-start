@@ -7,7 +7,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class I18nField {
+public class I18nField implements Comparable<I18nField>{
 
 	@Field(type = FieldType.String, analyzer="english")
 	private String en;
@@ -21,6 +21,9 @@ public class I18nField {
 	@Field(type = FieldType.String, analyzer="russian")
 	private String ru;
 	
+	@JsonIgnore
+	private int termScore = 0;
+	
 	public I18nField() {
 		super();
 	}
@@ -31,6 +34,14 @@ public class I18nField {
 		this.es = es;
 		this.pt = pt;
 		this.ru = ru;
+	}
+
+	public int getTermScore() {
+		return termScore;
+	}
+
+	public void setTermScore(int termScore) {
+		this.termScore = termScore;
 	}
 
 	public String getEn() {
@@ -91,6 +102,11 @@ public class I18nField {
 			value = getEn();
 		}
 		return value;
+	}
+
+	@Override
+	public int compareTo(I18nField arg0) {
+		return arg0.getTermScore()-getTermScore();
 	}
 
 }
