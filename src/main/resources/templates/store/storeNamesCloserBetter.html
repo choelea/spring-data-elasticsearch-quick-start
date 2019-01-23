@@ -19,7 +19,7 @@
           <a href="http://tech.jiu-shu.com/" class="logo">旧书 - IT Technologies</a>
         </div>
         <div class="col-sm-3">
-          <form class="search-form form-inline pull-right" action="/page/suppliers">
+          <form class="search-form form-inline pull-right" action="/page/store-names-closer-better">
             <div class="form-group">
               <label class="sr-only" for="search">搜索</label>
               <input type="text" class="form-control" name="keyword" id="search" size="30" th:value="${keyword}" placeholder="搜索"></input>
@@ -30,7 +30,9 @@
     </div>
   </header>
 	<div class="container">
-	<h1>Search Stores (search in both name and main products)</h1>
+	<h1>Search Stores (name only) 越近越高分</h1>
+	<p>参考如下： https://www.elastic.co/guide/cn/elasticsearch/guide/current/_closer_is_better.html 拆分后的单词相隔越近分数越高
+	https://www.elastic.co/guide/cn/elasticsearch/guide/current/proximity-relevance.html</p>
 	<div class="row col-md-12 table-responsive">
 		<table id="customerTable" class="table">
 			<thead>
@@ -41,15 +43,11 @@
 				</tr>
 			</thead>
 			<tbody>
-				 <tr th:each="supplier, rowStat: ${page}"
+				 <tr th:each="store, rowStat: ${page}"
 				 	 th:style="'color: gray'">
-			        <td th:text="${supplier.id}"></td>
-					<td th:utext="${supplier.name}"></td>
-					<td>
-						<span th:each="product, rowStat: ${supplier.mainProducts}">
-							<span th:utext="${product.en}" />,
-						</span>
-					</td>
+			        <td th:text="${store.id}"></td>
+					<td th:utext="${store.name}"></td>
+					<td th:utext="${store.mainProducts}"></td>
 			    </tr>
 			</tbody>
 		</table>

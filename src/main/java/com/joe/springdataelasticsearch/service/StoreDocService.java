@@ -8,7 +8,19 @@ import com.joe.springdataelasticsearch.document.StoreDoc;
 
 public interface StoreDocService {
 
+	
+	Page<StoreDoc> findAll(Pageable pageable);
+	
+	
 	Page<StoreDoc> searchInName(String keyword, Pageable pageable);
+	
+	/**
+	 * 查询name字段 越近越好
+	 * @param keyword
+	 * @param pageable
+	 * @return
+	 */
+	Page<StoreDoc> searchInNameCloserBetter(String keyword, Pageable pageable);
 	
 	/**
 	 * Search in both name and mainproducts fields

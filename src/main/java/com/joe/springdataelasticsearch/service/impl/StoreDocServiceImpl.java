@@ -2,6 +2,7 @@ package com.joe.springdataelasticsearch.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.common.unit.Fuzziness;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -18,6 +19,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import com.joe.springdataelasticsearch.core.ExtResultMapper;
 import com.joe.springdataelasticsearch.document.StoreDoc;
@@ -35,6 +37,17 @@ public class StoreDocServiceImpl implements StoreDocService {
 	@Autowired
 	private ExtResultMapper extResultMapper;
 
+
+	@Override
+	public Page<StoreDoc> findAll(Pageable pageable) {
+		QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).withPageable(pageable)
+				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1)).build();
+		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class, extResultMapper);
+		return page;
+	} 
+
+	
 	@Override
 	public Page<StoreDoc> searchInName(String keyword, Pageable pageable) {
 		QueryBuilder queryBuilder = null;
@@ -46,6 +59,21 @@ public class StoreDocServiceImpl implements StoreDocService {
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).withPageable(pageable)
 				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1)).build();
 
+		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
+		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class,
+				extResultMapper);
+		return page;
+	}
+	
+	@Override
+	public Page<StoreDoc> searchInNameCloserBetter(String keyword, Pageable pageable) {
+		Assert.notNull(keyword, "keyword cannot be null");
+	    Assert.hasLength(keyword.trim(), "keyword cannot be null nor empty");
+	    BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+		queryBuilder.must( QueryBuilders.matchQuery(StoreDoc._name, keyword).boost(10));
+		queryBuilder.should(QueryBuilders.matchPhraseQuery(StoreDoc._name, keyword).slop(30).boost(10));
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).withPageable(pageable)
+				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1)).build();
 		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
 		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class,
 				extResultMapper);
@@ -139,7 +167,5 @@ public class StoreDocServiceImpl implements StoreDocService {
 		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class, extResultMapper);
 		return page;
 	}
-
-	 
 
 }

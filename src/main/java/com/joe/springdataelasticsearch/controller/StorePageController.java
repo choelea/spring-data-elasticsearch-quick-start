@@ -1,5 +1,6 @@
 package com.joe.springdataelasticsearch.controller;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +29,20 @@ public class StorePageController {
         model.addAttribute("page", page);
         return "/store/storeNames";
     }
+	
+	@GetMapping("/store-names-closer-better")
+    public String searchStoreNamesCloserBetter(Model model,String keyword) {
+		Page<StoreDoc> page = null;
+		if (StringUtils.isEmpty(keyword)) {
+			page = storeDocService.findAll(new PageRequest(0, 20));
+		}else {
+			page = storeDocService.searchInNameCloserBetter(keyword, new PageRequest(0, 20));			
+		}
+		model.addAttribute("keyword", keyword);
+        model.addAttribute("page", page);
+        return "/store/storeNamesCloserBetter";
+    }
+	
 	
 	@GetMapping("/store-names-strict")
     public String searchStoreNamesStrict(Model model,String keyword) {

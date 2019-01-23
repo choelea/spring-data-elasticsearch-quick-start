@@ -66,7 +66,7 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
 
 	private void createStoreDocs() {
 		elasticsearchTemplate.index(new StoreDocBuilder(0l).name("XiaoMi Authorized Shop").mainProducts("Smart Phone").fullText().buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(1l).name("Oppo Authorized WuHan Shop Owned by Joe").mainProducts("Smart Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(1l).name("Oppo Authorized Owned by Joe in Wuhan Shop").mainProducts("Smart Phone").fullText().buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(2l).name("Meizu Authorized Shop Double Authorized").mainProducts("Smart Phone").fullText().buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(3l).name("Sung Authorized Shop").mainProducts("Smart Phone , Stupid Phone").fullText().buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(4l).name("Vivo Authorized Shop").mainProducts("Smart Phone").fullText().buildIndex());
@@ -79,10 +79,12 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
 		elasticsearchTemplate.index(new StoreDocBuilder(11l).name("Charlice Mobile Shop").mainProducts("Apple Phone, Old Phone").fullText().buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(12l).name("Charlice Mobile Shop").mainProducts("Apple Phone").fullText().buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(13l).name("Charlice Mobile Shop").mainProducts("Apple Phone").fullText().buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(14l).name("Charlice Mobile Shop").mainProducts("Apple Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(14l).name("Oppo Authorized Shop Owned by Joe in Wuhan").mainProducts("Apple Phone").fullText().buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(15l).name("Charlice Fruit Shop").mainProducts("Pear, Watermelon").fullText().buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(16l).name("Jane's Mobile Shop").mainProducts("Smart Phone").fullText().buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(17l).name("Charlise Shop").mainProducts("Smart Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(18l).name("Authorized Owned by Joe Meizu Shop").mainProducts("Smart Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(2l).name("Meizu Authorized Shop Located in Wuhan Optic Valley Software Park").mainProducts("Smart Phone").fullText().buildIndex());
 		
 		for(int i=18; i<30; i++) {
 			elasticsearchTemplate.index(new StoreDocBuilder(Long.valueOf(i).longValue()).name("Charlise Shop").mainProducts("Apple Phone").fullText().buildIndex());
