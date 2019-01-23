@@ -12,6 +12,7 @@ public interface StoreDocService {
 	Page<StoreDoc> findAll(Pageable pageable);
 	
 	
+	
 	Page<StoreDoc> searchInName(String keyword, Pageable pageable);
 	
 	/**
@@ -31,12 +32,20 @@ public interface StoreDocService {
 	Page<StoreDoc> search(String keyword, Pageable pageable);
 	
 	/**
+	 * Search in both name and mainproducts fields; 拆词后两个词隔的越近分越高
+	 * @param keyword
+	 * @param pageable
+	 * @return
+	 */
+	Page<StoreDoc> searchCloserBetter(String keyword, Pageable pageable);
+	/**
 	 * Search in both name and mainproducts fields, using function score query
 	 * @param keyword
 	 * @param pageable
 	 * @return
 	 */
 	Page<StoreDoc> searchFunctionally(String keyword, Pageable pageable);
+	
 	
 	Page<StoreDoc> searchFuzzily(String keyword, PageRequest pageable);
 	
@@ -55,4 +64,5 @@ public interface StoreDocService {
 	 * @return
 	 */
 	Page<StoreDoc> searchCorssFields(String keyword, PageRequest pageable);
+	
 }

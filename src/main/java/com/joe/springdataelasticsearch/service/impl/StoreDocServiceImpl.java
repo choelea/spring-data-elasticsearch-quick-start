@@ -95,6 +95,22 @@ public class StoreDocServiceImpl implements StoreDocService {
 		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class, extResultMapper);
 		return page;
 	}
+	
+	@Override
+	public Page<StoreDoc> searchCloserBetter(String keyword, Pageable pageable) {
+		Assert.notNull(keyword, "keyword cannot be null");
+	    Assert.hasLength(keyword.trim(), "keyword cannot be null nor empty");
+	    BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+		queryBuilder.must(QueryBuilders.multiMatchQuery(keyword).field(StoreDoc._name,10).field(StoreDoc._mainProducts, 10));
+		queryBuilder.should(QueryBuilders.matchPhraseQuery(StoreDoc._name, keyword).slop(3).boost(50));
+		
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).withPageable(pageable)
+				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1), new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1)).build();
+		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
+		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class,
+				extResultMapper);
+		return page;
+	}
 
 	@Override
 	public Page<StoreDoc> searchFuzzily(String keyword, PageRequest pageable) {

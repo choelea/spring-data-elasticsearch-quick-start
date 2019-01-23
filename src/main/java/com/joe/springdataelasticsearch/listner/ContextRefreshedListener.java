@@ -83,10 +83,10 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
 		elasticsearchTemplate.index(new StoreDocBuilder(15l).name("Charlice Fruit Shop").mainProducts("Pear, Watermelon").fullText().buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(16l).name("Jane's Mobile Shop").mainProducts("Smart Phone").fullText().buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(17l).name("Charlise Shop").mainProducts("Smart Phone").fullText().buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(18l).name("Authorized Owned by Joe Meizu Shop").mainProducts("Smart Phone").fullText().buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(2l).name("Meizu Authorized Shop Located in Wuhan Optic Valley Software Park").mainProducts("Smart Phone").fullText().buildIndex());
-		
-		for(int i=18; i<30; i++) {
+		elasticsearchTemplate.index(new StoreDocBuilder(18l).name("Authorized Owned by Joe Phone Meizu Shop").mainProducts("Smart Phone").fullText().buildIndex());		
+		elasticsearchTemplate.index(new StoreDocBuilder(19l).name("Meizu Authorized Phone Shop Located in Wuhan Optic Valley Software Park").mainProducts("Smart Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(20l).name("Authorized Phone Meizu Shop").mainProducts("Smart Phone").fullText().buildIndex());
+		for(int i=21; i<30; i++) {
 			elasticsearchTemplate.index(new StoreDocBuilder(Long.valueOf(i).longValue()).name("Charlise Shop").mainProducts("Apple Phone").fullText().buildIndex());
 		}
 	}

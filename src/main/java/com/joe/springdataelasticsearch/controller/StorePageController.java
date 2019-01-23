@@ -59,6 +59,19 @@ public class StorePageController {
         model.addAttribute("page", page);
         return "/store/stores";
     }
+	@GetMapping("/stores-closer-better")
+    public String searchStoresCloserBetter(Model model,String keyword) {
+		Page<StoreDoc> page = null;
+		if (StringUtils.isEmpty(keyword)) {
+			page = storeDocService.findAll(new PageRequest(0, 20));
+		}else {
+			page =  storeDocService.searchCloserBetter( keyword, new PageRequest(0, 20));
+		}
+		model.addAttribute("keyword", keyword);
+        model.addAttribute("page", page);
+        return "/store/storesCloserBetter";
+    }
+	
 	@GetMapping("/stores-cross-fields-search")
     public String searchStoresCrossFields(Model model,String keyword) {
 		Page<StoreDoc> page =  storeDocService.searchCorssFields(keyword, new PageRequest(0, 20));
