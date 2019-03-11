@@ -95,4 +95,12 @@ public class StorePageController {
         model.addAttribute("page", page);
         return "/store/storeFuzzy";
     }
+	
+	@GetMapping("/stores/randomscoring")
+    public String searchStoresRandomly(Model model,String keyword) {
+		Page<StoreDoc> page =  storeDocService.searchRandomly(keyword, new PageRequest(0, 5));
+		model.addAttribute("keyword", keyword);
+        model.addAttribute("page", page);
+        return "/store/randomscoring";
+    }
 }

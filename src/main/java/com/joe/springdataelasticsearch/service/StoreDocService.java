@@ -64,5 +64,15 @@ public interface StoreDocService {
 	 * @return
 	 */
 	Page<StoreDoc> searchCorssFields(String keyword, PageRequest pageable);
+
+
+
+	/**
+	 *  Randomly pick some
+	 * @param keyword
+	 * @param pageRequest
+	 * @return
+	 */
+	Page<StoreDoc> searchRandomly(String keyword, PageRequest pageRequest);
 	
 }

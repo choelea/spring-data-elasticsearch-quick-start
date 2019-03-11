@@ -184,4 +184,29 @@ public class StoreDocServiceImpl implements StoreDocService {
 		return page;
 	}
 
+
+	@Override
+	public Page<StoreDoc> searchRandomly(String keyword, PageRequest pageable) {
+		 // Function Score Query
+        FunctionScoreQueryBuilder functionScoreQueryBuilder = null;
+        if(StringUtils.isNotEmpty(keyword)) {
+        	functionScoreQueryBuilder = QueryBuilders.functionScoreQuery()
+        			.add(QueryBuilders.boolQuery().must(QueryBuilders.matchQuery(StoreDoc._name, keyword)), ScoreFunctionBuilders.weightFactorFunction(1.2f));
+        }else {
+        	functionScoreQueryBuilder = QueryBuilders.functionScoreQuery()
+        			.add(ScoreFunctionBuilders.randomFunction(System.currentTimeMillis()));        	
+        }
+        // 创建搜索 DSL 查询
+        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+        		.withQuery(functionScoreQueryBuilder)
+                .withPageable(pageable)	                
+                .withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1), new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1)).build();
+        		
+        LOGGER.info("\n searchFunctionally(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
+ 
+        Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class,
+				extResultMapper);
+        return page;
+	}
+
 }
