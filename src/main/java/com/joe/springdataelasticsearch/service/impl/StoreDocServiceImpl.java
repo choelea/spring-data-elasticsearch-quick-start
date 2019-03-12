@@ -29,14 +29,12 @@ import com.joe.springdataelasticsearch.service.StoreDocService;
 public class StoreDocServiceImpl implements StoreDocService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StoreDocServiceImpl.class);
- 
 
 	@Autowired
 	private ElasticsearchTemplate elasticsearchTemplate;
 
 	@Autowired
 	private ExtResultMapper extResultMapper;
-
 
 	@Override
 	public Page<StoreDoc> findAll(Pageable pageable) {
@@ -45,79 +43,80 @@ public class StoreDocServiceImpl implements StoreDocService {
 				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1)).build();
 		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class, extResultMapper);
 		return page;
-	} 
+	}
 
-	
 	@Override
 	public Page<StoreDoc> searchInName(String keyword, Pageable pageable) {
 		QueryBuilder queryBuilder = null;
-		if(StringUtils.isEmpty(keyword)) {
+		if (StringUtils.isEmpty(keyword)) {
 			queryBuilder = QueryBuilders.matchAllQuery();
-		}else {
+		} else {
 			queryBuilder = QueryBuilders.matchQuery(StoreDoc._name, keyword);
 		}
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).withPageable(pageable)
 				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1)).build();
 
 		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
-		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class,
-				extResultMapper);
+		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class, extResultMapper);
 		return page;
 	}
-	
+
 	@Override
 	public Page<StoreDoc> searchInNameCloserBetter(String keyword, Pageable pageable) {
 		Assert.notNull(keyword, "keyword cannot be null");
-	    Assert.hasLength(keyword.trim(), "keyword cannot be null nor empty");
-	    BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-		queryBuilder.must( QueryBuilders.matchQuery(StoreDoc._name, keyword).boost(10));
+		Assert.hasLength(keyword.trim(), "keyword cannot be null nor empty");
+		BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+		queryBuilder.must(QueryBuilders.matchQuery(StoreDoc._name, keyword).boost(10));
 		queryBuilder.should(QueryBuilders.matchPhraseQuery(StoreDoc._name, keyword).slop(30).boost(10));
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).withPageable(pageable)
 				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1)).build();
 		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
-		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class,
-				extResultMapper);
+		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class, extResultMapper);
 		return page;
 	}
 
 	@Override
 	public Page<StoreDoc> search(String keyword, Pageable pageable) {
 		QueryBuilder queryBuilder = null;
-		if(StringUtils.isEmpty(keyword)) {
+		if (StringUtils.isEmpty(keyword)) {
 			queryBuilder = QueryBuilders.matchAllQuery();
-		}else {
-			queryBuilder = QueryBuilders.multiMatchQuery(keyword, StoreDoc._name, StoreDoc._mainProducts );
+		} else {
+			queryBuilder = QueryBuilders.multiMatchQuery(keyword, StoreDoc._name, StoreDoc._mainProducts);
 		}
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).withPageable(pageable)
-				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1), new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1)).build();
+				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1),
+						new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1))
+				.build();
 
 		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
 		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class, extResultMapper);
 		return page;
 	}
-	
+
 	@Override
 	public Page<StoreDoc> searchCloserBetter(String keyword, Pageable pageable) {
 		Assert.notNull(keyword, "keyword cannot be null");
-	    Assert.hasLength(keyword.trim(), "keyword cannot be null nor empty");
-	    BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-		queryBuilder.must(QueryBuilders.multiMatchQuery(keyword).field(StoreDoc._name,10).field(StoreDoc._mainProducts, 10));
+		Assert.hasLength(keyword.trim(), "keyword cannot be null nor empty");
+		BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+		queryBuilder.must(
+				QueryBuilders.multiMatchQuery(keyword).field(StoreDoc._name, 10).field(StoreDoc._mainProducts, 10));
 		queryBuilder.should(QueryBuilders.matchPhraseQuery(StoreDoc._name, keyword).slop(3).boost(50));
-		
+
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).withPageable(pageable)
-				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1), new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1)).build();
+				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1),
+						new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1))
+				.build();
 		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
-		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class,
-				extResultMapper);
+		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class, extResultMapper);
 		return page;
 	}
 
 	@Override
 	public Page<StoreDoc> searchFuzzily(String keyword, PageRequest pageable) {
 		QueryBuilder queryBuilder = null;
-		if(StringUtils.isEmpty(keyword)) {
+		if (StringUtils.isEmpty(keyword)) {
 			queryBuilder = QueryBuilders.matchAllQuery();
-		}else {
+		} else {
 			queryBuilder = QueryBuilders.matchQuery(StoreDoc._name, keyword).fuzziness(Fuzziness.AUTO);
 		}
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).withPageable(pageable)
@@ -129,39 +128,43 @@ public class StoreDocServiceImpl implements StoreDocService {
 	}
 
 	@Override
-	public Page<StoreDoc> searchFunctionally(String keyword, Pageable pageable) {    
-	 
-	        // Function Score Query
-	        FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery()
-	                .add(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery(StoreDoc._name, keyword)),
-	                    ScoreFunctionBuilders.weightFactorFunction(1000))
-	                .add(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery(StoreDoc._mainProducts, keyword)),
-	                        ScoreFunctionBuilders.weightFactorFunction(100));
-	 
-	        // 创建搜索 DSL 查询
-	        SearchQuery searchQuery = new NativeSearchQueryBuilder()
-	        		.withQuery(functionScoreQueryBuilder)
-	                .withPageable(pageable)	                
-	                .withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1), new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1)).build();;
-	        		
-	        LOGGER.info("\n searchFunctionally(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
-	 
-	        Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class,
-					extResultMapper);
-	        return page;
-	    
+	public Page<StoreDoc> searchFunctionally(String keyword, Pageable pageable) {
+
+		// Function Score Query
+		FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery()
+				.add(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery(StoreDoc._name, keyword)),
+						ScoreFunctionBuilders.weightFactorFunction(1000))
+				.add(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery(StoreDoc._mainProducts, keyword)),
+						ScoreFunctionBuilders.weightFactorFunction(100));
+
+		// 创建搜索 DSL 查询
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(functionScoreQueryBuilder)
+				.withPageable(pageable)
+				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1),
+						new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1))
+				.build();
+		;
+
+		LOGGER.info("\n searchFunctionally(): searchContent [" + keyword + "] \n DSL  = \n "
+				+ searchQuery.getQuery().toString());
+
+		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class, extResultMapper);
+		return page;
+
 	}
 
 	@Override
 	public Page<StoreDoc> searchFulltext(String keyword, PageRequest pageable) {
 		QueryBuilder queryBuilder = null;
-		if(StringUtils.isEmpty(keyword)) {
+		if (StringUtils.isEmpty(keyword)) {
 			queryBuilder = QueryBuilders.matchAllQuery();
-		}else {
-			queryBuilder = QueryBuilders.matchQuery(StoreDoc._fullText,keyword);
+		} else {
+			queryBuilder = QueryBuilders.matchQuery(StoreDoc._fullText, keyword);
 		}
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).withPageable(pageable)
-				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1), new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1)).build();
+				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1),
+						new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1))
+				.build();
 
 		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
 		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class, extResultMapper);
@@ -171,42 +174,46 @@ public class StoreDocServiceImpl implements StoreDocService {
 	@Override
 	public Page<StoreDoc> searchCorssFields(String keyword, PageRequest pageable) {
 		QueryBuilder queryBuilder = null;
-		if(StringUtils.isEmpty(keyword)) {
+		if (StringUtils.isEmpty(keyword)) {
 			queryBuilder = QueryBuilders.matchAllQuery();
-		}else {
-			queryBuilder = QueryBuilders.multiMatchQuery(keyword, StoreDoc._name, StoreDoc._mainProducts ).type(MultiMatchQueryBuilder.Type.BEST_FIELDS);
+		} else {
+			queryBuilder = QueryBuilders.multiMatchQuery(keyword, StoreDoc._name, StoreDoc._mainProducts)
+					.type(MultiMatchQueryBuilder.Type.BEST_FIELDS);
 		}
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).withPageable(pageable)
-				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1), new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1)).build();
+				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1),
+						new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1))
+				.build();
 
 		LOGGER.info("\n search(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
 		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class, extResultMapper);
 		return page;
 	}
 
-
 	@Override
 	public Page<StoreDoc> searchRandomly(String keyword, PageRequest pageable) {
-		 // Function Score Query
-        FunctionScoreQueryBuilder functionScoreQueryBuilder = null;
-        if(StringUtils.isNotEmpty(keyword)) {
-        	functionScoreQueryBuilder = QueryBuilders.functionScoreQuery()
-        			.add(QueryBuilders.boolQuery().must(QueryBuilders.matchQuery(StoreDoc._name, keyword)), ScoreFunctionBuilders.weightFactorFunction(1.2f));
-        }else {
-        	functionScoreQueryBuilder = QueryBuilders.functionScoreQuery()
-        			.add(ScoreFunctionBuilders.randomFunction(System.currentTimeMillis()));        	
-        }
-        // 创建搜索 DSL 查询
-        SearchQuery searchQuery = new NativeSearchQueryBuilder()
-        		.withQuery(functionScoreQueryBuilder)
-                .withPageable(pageable)	                
-                .withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1), new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1)).build();
-        		
-        LOGGER.info("\n searchFunctionally(): searchContent [" + keyword + "] \n DSL  = \n " + searchQuery.getQuery().toString());
- 
-        Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class,
-				extResultMapper);
-        return page;
+		// Function Score Query
+		FunctionScoreQueryBuilder functionScoreQueryBuilder = null;
+		if (StringUtils.isNotEmpty(keyword)) {
+			functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(
+					QueryBuilders.multiMatchQuery(keyword, StoreDoc._name, StoreDoc._mainProducts),
+					ScoreFunctionBuilders.randomFunction(System.currentTimeMillis()));
+		} else {
+			functionScoreQueryBuilder = QueryBuilders.functionScoreQuery()
+					.add(ScoreFunctionBuilders.randomFunction(System.currentTimeMillis()));
+		}
+		// 创建搜索 DSL 查询
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(functionScoreQueryBuilder)
+				.withPageable(pageable)
+				.withHighlightFields(new HighlightBuilder.Field(StoreDoc._name).numOfFragments(1),
+						new HighlightBuilder.Field(StoreDoc._mainProducts).numOfFragments(1))
+				.build();
+
+		LOGGER.info("\n searchFunctionally(): searchContent [" + keyword + "] \n DSL  = \n "
+				+ searchQuery.getQuery().toString());
+
+		Page<StoreDoc> page = elasticsearchTemplate.queryForPage(searchQuery, StoreDoc.class, extResultMapper);
+		return page;
 	}
 
 }
