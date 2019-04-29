@@ -32,10 +32,22 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
 		elasticsearchTemplate.createIndex(ProductDoc.class);
 		elasticsearchTemplate.putMapping(ProductDoc.class);
 		
+		String setting = "{\r\n" + 
+				"    \"analysis\": {\r\n" + 
+				"        \"analyzer\": {\r\n" + 
+				"            \"whitespaceStanddard\": {\r\n" + 
+				"                \"type\":      \"standard\",\r\n" + 
+				"                \"tokenizer\": \"whitespace\"\r\n" + 
+				"            }\r\n" + 
+				"        }\r\n" + 
+				"    }\r\n" + 
+				"}";
 		elasticsearchTemplate.deleteIndex(StoreDoc.class);
+		
+		// This is another way to put setting when create index; but the custom analyzer doesn't work for now
+//		elasticsearchTemplate.createIndex(StoreDoc.class, setting); 
 		elasticsearchTemplate.createIndex(StoreDoc.class);
 		elasticsearchTemplate.putMapping(StoreDoc.class);
-		
 		
 		elasticsearchTemplate.deleteIndex(SupplierDoc.class);
 		elasticsearchTemplate.createIndex(SupplierDoc.class);
@@ -81,7 +93,7 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
 		elasticsearchTemplate.index(new StoreDocBuilder(13l).name("Charlice Mobile Shop").mainProducts("Apple Phone").fullText().buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(14l).name("Oppo Authorized Shop Owned by Joe in Wuhan").mainProducts("Apple Phone").fullText().buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(15l).name("Charlice Fruit Shop").mainProducts("Pear, Watermelon").fullText().buildIndex());
-		elasticsearchTemplate.index(new StoreDocBuilder(16l).name("Jane's Mobile Shop").mainProducts("Smart Phone").fullText().buildIndex());
+		elasticsearchTemplate.index(new StoreDocBuilder(16l).name("Jane's Mobile Shop").mainProducts("Smart-Phone").fullText().buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(17l).name("Charlise Shop").mainProducts("Smart Phone").fullText().buildIndex());
 		elasticsearchTemplate.index(new StoreDocBuilder(18l).name("Authorized Owned by Joe Phone Meizu Shop").mainProducts("Smart Phone").fullText().buildIndex());		
 		elasticsearchTemplate.index(new StoreDocBuilder(19l).name("Meizu Authorized Phone Shop Located in Wuhan Optic Valley Software Park").mainProducts("Smart Phone").fullText().buildIndex());

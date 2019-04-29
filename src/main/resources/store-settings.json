@@ -1,0 +1,10 @@
+{
+    "analysis": {
+        "analyzer": {
+            "whitespaceStanddard": {
+                "type":      "standard",
+                "tokenizer": "whitespace"
+            }
+        }
+    }
+}

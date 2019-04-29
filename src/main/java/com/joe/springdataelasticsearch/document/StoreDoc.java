@@ -31,15 +31,15 @@ public class StoreDoc implements Serializable {
 	@Field(type = FieldType.Long, index = FieldIndex.not_analyzed)
 	private Long id;
 
-	@Field(type = FieldType.String, analyzer = "english")
+	@Field(type = FieldType.String,  analyzer = "whitespace")
 	private String name;
 	public static final String _name = "name";
 
-	@Field(type = FieldType.String, analyzer = "english")
+	@Field(type = FieldType.String, analyzer = "whitespace")
 	private String mainProducts;
 	public static final String _mainProducts = "mainProducts";
 
-	@Field(type = FieldType.String, analyzer = "english")
+	@Field(type = FieldType.String,  analyzer = "whitespace")
 	private String fullText;
 	public static final String _fullText = "fullText";
 	
