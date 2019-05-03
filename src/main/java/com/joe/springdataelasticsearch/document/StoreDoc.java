@@ -8,8 +8,10 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldIndex;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Mapping;
 
 @Document(indexName = "store", type = "doc")
+@Mapping(mappingPath = "/mappings/store-mappings.json")
 public class StoreDoc implements Serializable {
 
 	/**
@@ -31,11 +33,11 @@ public class StoreDoc implements Serializable {
 	@Field(type = FieldType.Long, index = FieldIndex.not_analyzed)
 	private Long id;
 
-	@Field(type = FieldType.String,  analyzer = "whitespace")
+	@Field(type = FieldType.String, searchAnalyzer="whitespace",  analyzer = "whitespace")
 	private String name;
 	public static final String _name = "name";
 
-	@Field(type = FieldType.String, analyzer = "whitespace")
+	@Field(type = FieldType.String,searchAnalyzer="whitespace", analyzer = "whitespace")
 	private String mainProducts;
 	public static final String _mainProducts = "mainProducts";
 

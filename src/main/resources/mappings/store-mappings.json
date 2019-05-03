@@ -1,0 +1,11 @@
+{
+    "doc": {
+        "properties": {
+            "name": {
+	            "type": "string",
+	            "analyzer": "whitespace",
+	            "norms": { "enabled": false } 
+	          }
+        }
+    }
+}
