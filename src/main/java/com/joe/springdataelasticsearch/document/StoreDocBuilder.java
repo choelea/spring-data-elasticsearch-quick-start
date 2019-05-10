@@ -23,6 +23,11 @@ public class StoreDocBuilder {
 		storeDoc.setFullText(storeDoc.getName()+" "+storeDoc.getMainProducts());
 		return this;
 	}
+	
+	public StoreDocBuilder rating(Float rating) {
+		storeDoc.setRating(rating);
+		return this;
+	}
 	public IndexQuery buildIndex() {
 		IndexQuery indexQuery = new IndexQuery();
 		indexQuery.setId(storeDoc.getId().toString());

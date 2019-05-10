@@ -1,0 +1,11 @@
+{
+   "analysis": {
+        "analyzer": {
+            "std_whitespace": {
+            	"type":           "custom",
+                "tokenizer":      "whitespace",
+                "filter":         "lowercase"
+            }
+        }
+    }
+}
